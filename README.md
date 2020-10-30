@@ -13,7 +13,7 @@ git pull origin main
 
 2-Go to project folder:
 ```bash
-cd Prayer-App
+cd Prayer-android-app
 ```
 3-Open new branch:
 ```bash
