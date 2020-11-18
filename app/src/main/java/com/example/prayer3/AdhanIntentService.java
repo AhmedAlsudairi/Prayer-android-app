@@ -8,11 +8,11 @@ import android.content.Intent;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
-public class MyNewIntentService extends
+public class AdhanIntentService extends
         IntentService {
     private static final int NOTIFICATION_ID = 3;
 
-    public MyNewIntentService() {
+    public AdhanIntentService() {
         super("MyNewIntentService");
     }
 

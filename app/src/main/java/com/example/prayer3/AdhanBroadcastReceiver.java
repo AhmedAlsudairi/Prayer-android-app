@@ -14,7 +14,7 @@ public class AdhanBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 //Builds the notification with all the parameters
-        Intent intent1 = new Intent(context, MyNewIntentService.class);
+        Intent intent1 = new Intent(context, AdhanIntentService.class);
         context.startService(intent1);
     }
 }

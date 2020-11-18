@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         PendingIntent notifyPendingIntent = PendingIntent.getBroadcast(MainActivity.this,0,notifyIntent,PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC_WAKEUP,1000,notifyPendingIntent); // Require current pray time to calculate the remaining time for notification **
-        Log.d("",prayerPreference.getString("dohur",""));
+
     }
 
     @Override
