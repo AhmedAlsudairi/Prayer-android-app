@@ -15,7 +15,7 @@ public class AdhanBroadcastReceiver extends BroadcastReceiver {
 //        NotificationManager mNotifyManager =  (NotificationManager)getSystemService(Service.NOTIFICATION_SERVICE);
 //Builds the notification with all the parameters
         NotificationCompat.Builder notifyBuilder =
-                new NotificationCompat.Builder(this, CHANNEL_ID)
+                new NotificationCompat.Builder(context, "notifyChannel")
                         .setContentTitle("Prayer app")
                         .setContentText("Adhan Time")
                         .setSmallIcon(R.drawable.ic_launcher_background)

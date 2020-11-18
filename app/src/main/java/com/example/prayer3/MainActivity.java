@@ -1,8 +1,10 @@
 package com.example.prayer3;
 
 import android.Manifest;
+import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +16,7 @@ import android.os.Build;
 import android.os.Bundle;
 
 import com.example.libpraytime.PrayTime;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -67,7 +70,13 @@ public class MainActivity extends AppCompatActivity {
                 startService(i);
         }
         setSupportActionBar(toolbar);
+
+        // Notification set up
         createNotificationChannel();
+        Intent notifyIntent = new Intent(MainActivity.this,AdhanBroadcastReceiver.class);
+        PendingIntent notifyPendingIntent = PendingIntent.getBroadcast(MainActivity.this,0,notifyIntent,0);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP,5000,notifyPendingIntent);
     }
 
     @Override
@@ -154,11 +163,13 @@ public class MainActivity extends AppCompatActivity {
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel notificationChannel = new NotificationChannel("notifyChannel", "Prayer app Notification", NotificationManager.IMPORTANCE_DEFAULT);
-            NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             notificationChannel.enableLights(true);
             notificationChannel.setLightColor(Color.RED);
             notificationChannel.enableVibration(true);
             notificationChannel.setDescription("Notification from Prayer app");
+
+            NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            mNotificationManager.createNotificationChannel(notificationChannel);
         }
 
     }
