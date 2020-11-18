@@ -74,9 +74,10 @@ public class MainActivity extends AppCompatActivity {
         // Notification set up
         createNotificationChannel();
         Intent notifyIntent = new Intent(MainActivity.this,AdhanBroadcastReceiver.class);
-        PendingIntent notifyPendingIntent = PendingIntent.getBroadcast(MainActivity.this,0,notifyIntent,0);
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP,5000,notifyPendingIntent);
+        PendingIntent notifyPendingIntent = PendingIntent.getBroadcast(MainActivity.this,0,notifyIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP,1000,notifyPendingIntent); // Require current pray time to calculate the remaining time for notification **
+        Log.d("",prayerPreference.getString("dohur",""));
     }
 
     @Override
@@ -167,7 +168,6 @@ public class MainActivity extends AppCompatActivity {
             notificationChannel.setLightColor(Color.RED);
             notificationChannel.enableVibration(true);
             notificationChannel.setDescription("Notification from Prayer app");
-
             NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             mNotificationManager.createNotificationChannel(notificationChannel);
         }
