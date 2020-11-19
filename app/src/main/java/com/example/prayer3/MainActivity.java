@@ -175,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
     private void buldingTheNotitfications() {
         //fajr notification
         Intent fajrIntent = new Intent(MainActivity.this,AdhanBroadcastReceiver.class);
-        fajrIntent.putExtra("title","fajr");
+        fajrIntent.putExtra("title","Fajr");
         Random rFajr = new Random();
         int fajr = rFajr.nextInt();
         PendingIntent fajrPendingIntent = PendingIntent.getBroadcast(MainActivity.this,fajr,fajrIntent,PendingIntent.FLAG_UPDATE_CURRENT);
@@ -184,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
 
         //dohur notification
         Intent dohurIntent = new Intent(MainActivity.this,AdhanBroadcastReceiver.class);
-        dohurIntent.putExtra("title","dohur");
+        dohurIntent.putExtra("title","Dohur");
         Random rDohur = new Random();
         int dohur = rDohur.nextInt();
         PendingIntent dohurPendingIntent = PendingIntent.getBroadcast(MainActivity.this,dohur,dohurIntent,PendingIntent.FLAG_UPDATE_CURRENT);
@@ -192,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
 
         //asr notification
         Intent asrIntent = new Intent(MainActivity.this,AdhanBroadcastReceiver.class);
-        asrIntent.putExtra("title","asr");
+        asrIntent.putExtra("title","Asr");
         Random rAsr = new Random();
         int asr = rAsr.nextInt();
         PendingIntent asrPendingIntent = PendingIntent.getBroadcast(MainActivity.this,asr,asrIntent,PendingIntent.FLAG_UPDATE_CURRENT);
@@ -200,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
 
         //magreb notification
         Intent magrebIntent = new Intent(MainActivity.this,AdhanBroadcastReceiver.class);
-        magrebIntent.putExtra("title","magreb");
+        magrebIntent.putExtra("title","Magreb");
         Random rMagreb = new Random();
         int magreb = rMagreb.nextInt();
         PendingIntent magrebPendingIntent = PendingIntent.getBroadcast(MainActivity.this,magreb,magrebIntent,PendingIntent.FLAG_UPDATE_CURRENT);
@@ -208,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
 
         //isha notification
         Intent ishaIntent = new Intent(MainActivity.this,AdhanBroadcastReceiver.class);
-        ishaIntent.putExtra("title","isha");
+        ishaIntent.putExtra("title","Isha");
         Random rIsha = new Random();
         int isha = rIsha.nextInt();
         PendingIntent ishaPendingIntent = PendingIntent.getBroadcast(MainActivity.this,isha,ishaIntent,PendingIntent.FLAG_UPDATE_CURRENT);
