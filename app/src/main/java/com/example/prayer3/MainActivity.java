@@ -37,6 +37,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
     private BroadcastReceiver locationReceiver;
@@ -73,10 +74,13 @@ public class MainActivity extends AppCompatActivity {
 
         // Notification set up
         createNotificationChannel();
-        Intent notifyIntent = new Intent(MainActivity.this,AdhanBroadcastReceiver.class);
-        PendingIntent notifyPendingIntent = PendingIntent.getBroadcast(MainActivity.this,0,notifyIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+        Intent dohurIntent = new Intent(MainActivity.this,AdhanBroadcastReceiver.class);
+        dohurIntent.putExtra("title","dohur");
+        Random r = new Random();
+        int dohur = r.nextInt();
+        PendingIntent dohurPendingIntent = PendingIntent.getBroadcast(MainActivity.this,dohur,dohurIntent,PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP,1000,notifyPendingIntent); // Require current pray time to calculate the remaining time for notification **
+        alarmManager.set(AlarmManager.RTC_WAKEUP,10000,dohurPendingIntent); // Require current pray time to calculate the remaining time for notification **
 
     }
 

@@ -6,6 +6,7 @@ import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -17,4 +18,17 @@ public class AdhanBroadcastReceiver extends BroadcastReceiver {
         Intent intent1 = new Intent(context, AdhanIntentService.class);
         context.startService(intent1);
     }
+
+//    public void playSound() {
+//        MediaPlayer sound = MediaPlayer.create(this, R.raw.mySound);
+//        sound.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+//            @Override
+//            public void onCompletion(MediaPlayer mp) {
+//                mp.release();
+//            }
+//
+//        });
+//
+//        quadrantChangeSound.start();
+//    }
 }
