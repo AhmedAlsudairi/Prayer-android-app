@@ -34,6 +34,8 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -75,6 +77,15 @@ public class MainActivity extends AppCompatActivity {
         // Notification set up
         createNotificationChannel();
         buldingTheNotitfications();
+        PrayTime prayer = new PrayTime();
+
+
+        setPrayerSettings(prayer,1,4,0,3);
+        try {
+            CalculatePrayerTimesOnly(prayer);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -309,5 +320,43 @@ public class MainActivity extends AppCompatActivity {
             prayerNameWithTime.add(prayerTimes.get(i));
         }
         return prayerNameWithTime;
+    }
+
+
+    public void CalculatePrayerTimesOnly(PrayTime prayer) throws ParseException {
+        /*
+        This method will calculate prayerTimes in given prayer object, then convert times from String to long in millisecond.
+        Finally it save times (millisecond) of prayers in SharedPreferences with its key. for example: prayerPreference.getLong("FajrTime",0) will give you fajr time in millisecond (47940000)
+         */
+
+        prayerPreference = PreferenceManager.getDefaultSharedPreferences(this);
+        prayerEditor = prayerPreference.edit();
+
+        //Get lang,lat of our shared prefrence
+        double lang =(double) prayerPreference.getFloat("long",-1);
+        double lat = (double) prayerPreference.getFloat("lat",-1);
+
+        double timezone = prayer.getBaseTimeZone();
+
+
+        int[] offsets = {0, 0, 0, 0, 0, 0, 0}; // {Fajr,Sunrise,Dhuhr,Asr,Sunset,Maghrib,Isha}
+        prayer.tune(offsets);
+
+        Date now = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(now);
+
+        ArrayList<String> prayerTimes = prayer.getPrayerTimes(cal, lat, lang, timezone);
+
+        String [] names = {"FajrTime","SunriseTime","DhuhrTime","AsrTime","SunsetTime","MaghribTime","IshaTime"};
+        for (int i = 0; i < prayerTimes.size(); i++) {
+            String dateString = prayerTimes.get(i);
+            SimpleDateFormat format = new SimpleDateFormat("hh:mm a");
+            Date date = format.parse(dateString);
+            long millisecond = date.getTime();
+            prayerEditor.putLong(names[i],millisecond);
+            System.out.println(names[i]+" "+prayerPreference.getLong(names[i],0));
+        }
+        return;
     }
 }
