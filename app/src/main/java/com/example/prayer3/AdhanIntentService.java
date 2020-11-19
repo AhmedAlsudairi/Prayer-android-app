@@ -24,7 +24,7 @@ public class AdhanIntentService extends IntentService {
         Intent notifyIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 2, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        Uri path = Uri.parse("android.resource://raw/" + R.raw.adhan);
+//        Uri path = Uri.parse("android.resource://raw/" + R.raw.adhan);
         NotificationCompat.Builder notifyBuilder =
                 new NotificationCompat.Builder(this, "notifyChannel")
                         .setContentTitle("Prayer app")
