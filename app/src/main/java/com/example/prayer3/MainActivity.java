@@ -21,6 +21,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -34,6 +35,8 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -72,49 +75,18 @@ public class MainActivity extends AppCompatActivity {
         }
         setSupportActionBar(toolbar);
 
+
+        // saving prayer times in millisecond format
+        PrayTime prayer = new PrayTime();
+        setPrayerSettings(prayer,1,4,0,3);
+        try {
+            CalculatePrayerTimesOnly(prayer);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         // Notification set up
         createNotificationChannel();
-
-        //fajr notification
-        Intent fajrIntent = new Intent(MainActivity.this,AdhanBroadcastReceiver.class);
-        fajrIntent.putExtra("title","fajr");
-        Random rFajr = new Random();
-        int fajr = rFajr.nextInt();
-        PendingIntent fajrPendingIntent = PendingIntent.getBroadcast(MainActivity.this,fajr,fajrIntent,PendingIntent.FLAG_UPDATE_CURRENT);
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP,10000,fajrPendingIntent); // Require current pray time to calculate the remaining time for notification **
-
-        //dohur notification
-        Intent dohurIntent = new Intent(MainActivity.this,AdhanBroadcastReceiver.class);
-        dohurIntent.putExtra("title","dohur");
-        Random rDohur = new Random();
-        int dohur = rDohur.nextInt();
-        PendingIntent dohurPendingIntent = PendingIntent.getBroadcast(MainActivity.this,dohur,dohurIntent,PendingIntent.FLAG_UPDATE_CURRENT);
-        alarmManager.set(AlarmManager.RTC_WAKEUP,10000,dohurPendingIntent);
-
-        //asr notification
-        Intent asrIntent = new Intent(MainActivity.this,AdhanBroadcastReceiver.class);
-        asrIntent.putExtra("title","asr");
-        Random rAsr = new Random();
-        int asr = rAsr.nextInt();
-        PendingIntent asrPendingIntent = PendingIntent.getBroadcast(MainActivity.this,asr,asrIntent,PendingIntent.FLAG_UPDATE_CURRENT);
-        alarmManager.set(AlarmManager.RTC_WAKEUP,10000,asrPendingIntent);
-
-        //magreb notification
-        Intent magrebIntent = new Intent(MainActivity.this,AdhanBroadcastReceiver.class);
-        magrebIntent.putExtra("title","magreb");
-        Random rMagreb = new Random();
-        int magreb = rMagreb.nextInt();
-        PendingIntent magrebPendingIntent = PendingIntent.getBroadcast(MainActivity.this,magreb,magrebIntent,PendingIntent.FLAG_UPDATE_CURRENT);
-        alarmManager.set(AlarmManager.RTC_WAKEUP,10000,magrebPendingIntent);
-
-        //isha notification
-        Intent ishaIntent = new Intent(MainActivity.this,AdhanBroadcastReceiver.class);
-        ishaIntent.putExtra("title","isha");
-        Random rIsha = new Random();
-        int isha = rIsha.nextInt();
-        PendingIntent ishaPendingIntent = PendingIntent.getBroadcast(MainActivity.this,isha,ishaIntent,PendingIntent.FLAG_UPDATE_CURRENT);
-        alarmManager.set(AlarmManager.RTC_WAKEUP,10000,ishaPendingIntent);
+        buldingTheNotitfications();
     }
 
     @Override
@@ -197,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
+    // create notification channel to (API 26 and higher)
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel notificationChannel = new NotificationChannel("notifyChannel", "Prayer app Notification", NotificationManager.IMPORTANCE_DEFAULT);
@@ -211,6 +183,60 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    // Bulding the notitfications for all prayers
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void buldingTheNotitfications() {
+        //fajr notification
+        long fajrTime = prayerPreference.getLong("FajrTime",0);
+        System.out.println(fajrTime);
+        Intent fajrIntent = new Intent(MainActivity.this,AdhanBroadcastReceiver.class);
+        fajrIntent.putExtra("title","Fajr");
+        Random rFajr = new Random();
+        int fajr = rFajr.nextInt();
+        PendingIntent fajrPendingIntent = PendingIntent.getBroadcast(MainActivity.this,fajr,fajrIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP,fajrTime,fajrPendingIntent);
+
+        //dohur notification
+        long dohurTime = prayerPreference.getLong("DhuhrTime",0);
+        System.out.println(dohurTime);
+        Intent dohurIntent = new Intent(MainActivity.this,AdhanBroadcastReceiver.class);
+        dohurIntent.putExtra("title","Dohur");
+        Random rDohur = new Random();
+        int dohur = rDohur.nextInt();
+        PendingIntent dohurPendingIntent = PendingIntent.getBroadcast(MainActivity.this,dohur,dohurIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP,dohurTime,dohurPendingIntent);
+
+        //asr notification
+        long asrTime = prayerPreference.getLong("AsrTime",0);
+        System.out.println(asrTime);
+        Intent asrIntent = new Intent(MainActivity.this,AdhanBroadcastReceiver.class);
+        asrIntent.putExtra("title","Asr");
+        Random rAsr = new Random();
+        int asr = rAsr.nextInt();
+        PendingIntent asrPendingIntent = PendingIntent.getBroadcast(MainActivity.this,asr,asrIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP,asrTime,asrPendingIntent);
+
+        //magreb notification
+        long magrebTime = prayerPreference.getLong("MaghribTime",0);
+        System.out.println(magrebTime);
+        Intent magrebIntent = new Intent(MainActivity.this,AdhanBroadcastReceiver.class);
+        magrebIntent.putExtra("title","Magreb");
+        Random rMagreb = new Random();
+        int magreb = rMagreb.nextInt();
+        PendingIntent magrebPendingIntent = PendingIntent.getBroadcast(MainActivity.this,magreb,magrebIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP,magrebTime,magrebPendingIntent);
+
+        //isha notification
+        long ishaTime = prayerPreference.getLong("IshaTime",0);
+        System.out.println(ishaTime);
+        Intent ishaIntent = new Intent(MainActivity.this,AdhanBroadcastReceiver.class);
+        ishaIntent.putExtra("title","Isha");
+        Random rIsha = new Random();
+        int isha = rIsha.nextInt();
+        PendingIntent ishaPendingIntent = PendingIntent.getBroadcast(MainActivity.this,isha,ishaIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP,ishaTime,ishaPendingIntent);
+    }
     //Check if location permissions already granted or not.
     private boolean runtime_permission(){
         if( Build.VERSION.SDK_INT >= 23
@@ -306,5 +332,45 @@ public class MainActivity extends AppCompatActivity {
             prayerNameWithTime.add(prayerTimes.get(i));
         }
         return prayerNameWithTime;
+    }
+
+
+    public void CalculatePrayerTimesOnly(PrayTime prayer) throws ParseException {
+        /*
+        This method will calculate prayerTimes in given prayer object, then convert times from String to long in millisecond.
+        Finally it save times (millisecond) of prayers in SharedPreferences with its key. for example: prayerPreference.getLong("FajrTime",0) will give you fajr time in millisecond (47940000)
+         */
+
+        prayerPreference = PreferenceManager.getDefaultSharedPreferences(this);
+        prayerEditor = prayerPreference.edit();
+
+        //Get lang,lat of our shared prefrence
+        double lang =(double) prayerPreference.getFloat("long",-1);
+        double lat = (double) prayerPreference.getFloat("lat",-1);
+
+        double timezone = prayer.getBaseTimeZone();
+
+
+        int[] offsets = {0, 0, 0, 0, 0, 0, 0}; // {Fajr,Sunrise,Dhuhr,Asr,Sunset,Maghrib,Isha}
+        prayer.tune(offsets);
+
+        Date now = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(now);
+        ArrayList<String> prayerTimes = prayer.getPrayerTimes(cal, lat, lang, timezone);
+
+        String [] names = {"FajrTime","SunriseTime","DhuhrTime","AsrTime","SunsetTime","MaghribTime","IshaTime"};
+        for (int i = 0; i < prayerTimes.size(); i++) {
+            Date date = new Date();
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+            String strDate= formatter.format(date);
+            String dateString = strDate+" "+prayerTimes.get(i);
+            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
+            Date time = format.parse(dateString);
+            long millisecond = time.getTime();
+            prayerEditor.putLong(names[i],millisecond);
+            System.out.println(names[i]+" "+prayerPreference.getLong(names[i],0));
+        }
+        return;
     }
 }
