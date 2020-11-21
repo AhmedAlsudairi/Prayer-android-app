@@ -25,6 +25,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.preference.PreferenceManager;
@@ -196,20 +197,35 @@ public class MainActivity extends AppCompatActivity {
         }
             System.out.println(false);
 
-        //silence mode
-        Intent silenceIntent = new Intent(MainActivity.this,silenceBroadcastReceiver.class);
-        Random silence = new Random();
-        int silenceInt = silence.nextInt();
-        PendingIntent silencePendingIntent = PendingIntent.getBroadcast(MainActivity.this,silenceInt,silenceIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        //setup the notification
-        if (Build.VERSION.SDK_INT >= 23) {
-            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time, pIntent);
-        }
-        else if (android.os.Build.VERSION.SDK_INT >= 19) {
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, time, pIntent);
-        } else {
-            alarmManager.set(AlarmManager.RTC_WAKEUP, time, pIntent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                && !notificationManager.isNotificationPolicyAccessGranted()) {
+
+            Intent intent = new Intent(
+                    android.provider.Settings
+                            .ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
+
+            startActivity(intent);
+        }else {
+            //silence mode
+            Intent silenceIntent = new Intent(MainActivity.this, silenceBroadcastReceiver.class);
+            Random silence = new Random();
+            int silenceInt = silence.nextInt();
+            PendingIntent silencePendingIntent = PendingIntent.getBroadcast(MainActivity.this, silenceInt, silenceIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            //setup the notification
+            if (Build.VERSION.SDK_INT >= 23) {
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time, pIntent);
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time + 1000 * 60 * 30, silencePendingIntent);
+            } else if (android.os.Build.VERSION.SDK_INT >= 19) {
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, time, pIntent);
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, time + 1000 * 60 * 30, silencePendingIntent);
+            } else {
+                alarmManager.set(AlarmManager.RTC_WAKEUP, time, pIntent);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, time + 1000 * 60 * 30, silencePendingIntent);
+            }
         }
     }
     // Bulding the notitfications for all prayers
@@ -279,6 +295,19 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
+    private boolean runtime_permission_notifications(){
+        if (Build.VERSION.SDK_INT >= 23
+                && ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_NOTIFICATION_POLICY)
+                == PackageManager.PERMISSION_DENIED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{ Manifest.permission.ACCESS_NOTIFICATION_POLICY },
+                    500);
+            return true;
+        }
+        return false;
+    }
 
     //Required to check if we get the location permissions correctly or not, if not ask for it again.
     @Override
@@ -287,6 +316,10 @@ public class MainActivity extends AppCompatActivity {
         if(requestCode == 100){
             if(grantResults[0] != PackageManager.PERMISSION_GRANTED && grantResults[1] != PackageManager.PERMISSION_GRANTED)
                 runtime_permission();
+        }
+        if(requestCode == 200){
+            if(grantResults[0] != PackageManager.PERMISSION_GRANTED)
+                runtime_permission_notifications();
         }
     }
 
