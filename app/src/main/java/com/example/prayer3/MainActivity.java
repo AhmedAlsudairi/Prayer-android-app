@@ -186,10 +186,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    @SuppressLint("NewApi")
+
     private void setSingleExactAlarm(long time, PendingIntent pIntent) {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        if (android.os.Build.VERSION.SDK_INT >= 19) {
+        if (Build.VERSION.SDK_INT >= 23) {
+            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time, pIntent);
+        } else if (android.os.Build.VERSION.SDK_INT >= 19) {
             alarmManager.setExact(AlarmManager.RTC_WAKEUP, time, pIntent);
         } else {
             alarmManager.set(AlarmManager.RTC_WAKEUP, time, pIntent);
@@ -206,7 +208,6 @@ public class MainActivity extends AppCompatActivity {
         Random rFajr = new Random();
         int fajr = rFajr.nextInt();
         PendingIntent fajrPendingIntent = PendingIntent.getBroadcast(MainActivity.this,fajr,fajrIntent,PendingIntent.FLAG_UPDATE_CURRENT);
-
         setSingleExactAlarm(fajrTime,fajrPendingIntent);
 
         //dohur notification
