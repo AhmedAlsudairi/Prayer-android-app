@@ -37,7 +37,7 @@ public class AdhanIntentService extends IntentService {
         //try
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.notify(NOTIFICATION_ID,notifyBuilder.build());
-        playSound(getApplicationContext());
+//        playSound(getApplicationContext());
     }
 
     public void playSound(Context context) {

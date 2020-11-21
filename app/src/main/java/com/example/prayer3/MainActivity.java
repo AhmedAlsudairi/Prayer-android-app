@@ -1,6 +1,7 @@
 package com.example.prayer3;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -24,6 +25,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.preference.PreferenceManager;
@@ -51,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView asrTextView;
     private TextView magrebTextView;
     private TextView ishaTextView;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -183,8 +187,49 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+    private void setSingleExactAlarm(long time, PendingIntent pIntent) {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        boolean alreadyDone = System.currentTimeMillis() > time;
+        if (alreadyDone){
+            System.out.println(true);
+            return;
+        }
+            System.out.println(false);
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                && !notificationManager.isNotificationPolicyAccessGranted()) {
+
+            Intent intent = new Intent(
+                    android.provider.Settings
+                            .ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
+
+            startActivity(intent);
+        }else {
+            //silence mode
+            Intent silenceIntent = new Intent(MainActivity.this, silenceBroadcastReceiver.class);
+            Random silence = new Random();
+            int silenceInt = silence.nextInt();
+            PendingIntent silencePendingIntent = PendingIntent.getBroadcast(MainActivity.this, silenceInt, silenceIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            //setup the notification
+            if (Build.VERSION.SDK_INT >= 23) {
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time, pIntent);
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time + 1000 * 60 * 30, silencePendingIntent);
+            } else if (android.os.Build.VERSION.SDK_INT >= 19) {
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, time, pIntent);
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, time + 1000 * 60 * 30, silencePendingIntent);
+            } else {
+                alarmManager.set(AlarmManager.RTC_WAKEUP, time, pIntent);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, time + 1000 * 60 * 30, silencePendingIntent);
+            }
+        }
+    }
     // Bulding the notitfications for all prayers
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+
     private void buldingTheNotitfications() {
         //fajr notification
         long fajrTime = prayerPreference.getLong("FajrTime",0);
@@ -194,8 +239,7 @@ public class MainActivity extends AppCompatActivity {
         Random rFajr = new Random();
         int fajr = rFajr.nextInt();
         PendingIntent fajrPendingIntent = PendingIntent.getBroadcast(MainActivity.this,fajr,fajrIntent,PendingIntent.FLAG_UPDATE_CURRENT);
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP,fajrTime,fajrPendingIntent);
+        setSingleExactAlarm(fajrTime,fajrPendingIntent);
 
         //dohur notification
         long dohurTime = prayerPreference.getLong("DhuhrTime",0);
@@ -205,7 +249,7 @@ public class MainActivity extends AppCompatActivity {
         Random rDohur = new Random();
         int dohur = rDohur.nextInt();
         PendingIntent dohurPendingIntent = PendingIntent.getBroadcast(MainActivity.this,dohur,dohurIntent,PendingIntent.FLAG_UPDATE_CURRENT);
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP,dohurTime,dohurPendingIntent);
+        setSingleExactAlarm(dohurTime,dohurPendingIntent);
 
         //asr notification
         long asrTime = prayerPreference.getLong("AsrTime",0);
@@ -215,7 +259,7 @@ public class MainActivity extends AppCompatActivity {
         Random rAsr = new Random();
         int asr = rAsr.nextInt();
         PendingIntent asrPendingIntent = PendingIntent.getBroadcast(MainActivity.this,asr,asrIntent,PendingIntent.FLAG_UPDATE_CURRENT);
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP,asrTime,asrPendingIntent);
+        setSingleExactAlarm(asrTime,asrPendingIntent);
 
         //magreb notification
         long magrebTime = prayerPreference.getLong("MaghribTime",0);
@@ -225,7 +269,7 @@ public class MainActivity extends AppCompatActivity {
         Random rMagreb = new Random();
         int magreb = rMagreb.nextInt();
         PendingIntent magrebPendingIntent = PendingIntent.getBroadcast(MainActivity.this,magreb,magrebIntent,PendingIntent.FLAG_UPDATE_CURRENT);
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP,magrebTime,magrebPendingIntent);
+        setSingleExactAlarm(magrebTime,magrebPendingIntent);
 
         //isha notification
         long ishaTime = prayerPreference.getLong("IshaTime",0);
@@ -235,7 +279,7 @@ public class MainActivity extends AppCompatActivity {
         Random rIsha = new Random();
         int isha = rIsha.nextInt();
         PendingIntent ishaPendingIntent = PendingIntent.getBroadcast(MainActivity.this,isha,ishaIntent,PendingIntent.FLAG_UPDATE_CURRENT);
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP,ishaTime,ishaPendingIntent);
+        setSingleExactAlarm(ishaTime,ishaPendingIntent);
     }
     //Check if location permissions already granted or not.
     private boolean runtime_permission(){
@@ -251,6 +295,19 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
+    private boolean runtime_permission_notifications(){
+        if (Build.VERSION.SDK_INT >= 23
+                && ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_NOTIFICATION_POLICY)
+                == PackageManager.PERMISSION_DENIED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{ Manifest.permission.ACCESS_NOTIFICATION_POLICY },
+                    500);
+            return true;
+        }
+        return false;
+    }
 
     //Required to check if we get the location permissions correctly or not, if not ask for it again.
     @Override
@@ -259,6 +316,10 @@ public class MainActivity extends AppCompatActivity {
         if(requestCode == 100){
             if(grantResults[0] != PackageManager.PERMISSION_GRANTED && grantResults[1] != PackageManager.PERMISSION_GRANTED)
                 runtime_permission();
+        }
+        if(requestCode == 200){
+            if(grantResults[0] != PackageManager.PERMISSION_GRANTED)
+                runtime_permission_notifications();
         }
     }
 
