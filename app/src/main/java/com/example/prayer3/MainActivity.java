@@ -189,9 +189,17 @@ public class MainActivity extends AppCompatActivity {
 
     private void setSingleExactAlarm(long time, PendingIntent pIntent) {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        boolean alreadyDone = System.currentTimeMillis() > time;
+        if (alreadyDone){
+            System.out.println(true);
+            return;
+        }
+            System.out.println(false);
+
         if (Build.VERSION.SDK_INT >= 23) {
             alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time, pIntent);
-        } else if (android.os.Build.VERSION.SDK_INT >= 19) {
+        }
+        else if (android.os.Build.VERSION.SDK_INT >= 19) {
             alarmManager.setExact(AlarmManager.RTC_WAKEUP, time, pIntent);
         } else {
             alarmManager.set(AlarmManager.RTC_WAKEUP, time, pIntent);
