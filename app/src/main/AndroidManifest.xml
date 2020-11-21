@@ -38,6 +38,12 @@
             android:name=".AdhanIntentService"
             android:exported="false" >
         </service>
+
+        <receiver
+            android:name=".silenceBroadcastReceiver"
+            android:enabled="true"
+            android:exported="false" >
+        </receiver>
     </application>
 
 </manifest>

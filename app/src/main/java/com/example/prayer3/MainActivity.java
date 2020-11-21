@@ -196,6 +196,13 @@ public class MainActivity extends AppCompatActivity {
         }
             System.out.println(false);
 
+        //silence mode
+        Intent silenceIntent = new Intent(MainActivity.this,silenceBroadcastReceiver.class);
+        Random silence = new Random();
+        int silenceInt = silence.nextInt();
+        PendingIntent silencePendingIntent = PendingIntent.getBroadcast(MainActivity.this,silenceInt,silenceIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+
+        //setup the notification
         if (Build.VERSION.SDK_INT >= 23) {
             alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time, pIntent);
         }
