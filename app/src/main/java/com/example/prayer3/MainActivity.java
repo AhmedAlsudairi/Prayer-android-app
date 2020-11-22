@@ -31,6 +31,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -44,8 +45,20 @@ public class MainActivity extends AppCompatActivity {
     private TextView asrTextView;
     private TextView magrebTextView;
     private TextView ishaTextView;
+
+    private double fajr;
+    private double dohur;
+    private double asr;
+    private double magreb;
+    private double ish;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+//
+//        calx();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -60,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
         asrTextView = findViewById(R.id.asrView);
         magrebTextView = findViewById(R.id.magrebView);
         ishaTextView = findViewById(R.id.ishaView);
+
         // if location permissions already granted, start the work.
         if(!runtime_permission()){
             //Start location service then update the UI, Note: the service will stop when we receive location info
@@ -73,6 +87,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+
+
+
         //if the receiver not created yet, create it. This to avoid recreating receiver each time
         if(locationReceiver == null){
             locationReceiver = new BroadcastReceiver() {
@@ -104,6 +122,8 @@ public class MainActivity extends AppCompatActivity {
                     prayerEditor.putString("sunset", prayerTimeWithName.get(4));
                     prayerEditor.putString("magreb", prayerTimeWithName.get(5));
                     prayerEditor.putString("isha", prayerTimeWithName.get(6));
+               //     double s=Double.parseDouble(prayerTimeWithName.get(0));
+
                     prayerEditor.commit();
 
                     fajrTextView.setText(prayerPreference.getString("fajr",""));
@@ -112,6 +132,9 @@ public class MainActivity extends AppCompatActivity {
                     asrTextView.setText(prayerPreference.getString("asr",""));
                     magrebTextView.setText(prayerPreference.getString("magreb",""));
                     ishaTextView.setText(prayerPreference.getString("isha",""));
+
+
+
                 }
 
             };
@@ -254,9 +277,15 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<String> prayerNameWithTime= new ArrayList<>();
 
         for (int i = 0; i < prayerTimes.size(); i++) {
+
             System.out.println(prayerNames.get(i) + " - " + prayerTimes.get(i));
             prayerNameWithTime.add(prayerTimes.get(i));
+
+
+
+
         }
         return prayerNameWithTime;
     }
+
 }
