@@ -15,7 +15,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-
 import com.example.libpraytime.PrayTime;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -53,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView asrTextView;
     private TextView magrebTextView;
     private TextView ishaTextView;
+
 
 
     @Override
