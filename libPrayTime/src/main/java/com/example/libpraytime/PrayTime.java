@@ -581,7 +581,7 @@ public class PrayTime {
     }
 
     // adjust times in a prayer time array
-    private double[] adjustTimes(double[] times) {
+    public double[] adjustTimes(double[] times) {
         for (int i = 0; i < times.length; i++) {
             times[i] += this.getTimeZone() - this.getLng() / 15;
         }
