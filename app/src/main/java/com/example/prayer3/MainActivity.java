@@ -92,9 +92,9 @@ public class MainActivity extends AppCompatActivity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        // Notification set up
+
+        // Notification channel set up
         createNotificationChannel();
-        buldingTheNotitfications();
     }
 
     @Override
@@ -154,6 +154,8 @@ public class MainActivity extends AppCompatActivity {
         }
         registerReceiver(locationReceiver, new IntentFilter("location_updates"));
 
+        //building the notification when the app is resume
+        buldingTheNotitfications();
     }
 
     @Override
@@ -443,6 +445,7 @@ public class MainActivity extends AppCompatActivity {
             Date date = new Date();
             SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
             String strDate= formatter.format(date);
+            System.out.println(strDate);
             String dateString = strDate+" "+prayerTimes.get(i);
             SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
             Date time = format.parse(dateString);
