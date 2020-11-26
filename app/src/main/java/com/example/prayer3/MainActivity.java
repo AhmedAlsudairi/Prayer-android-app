@@ -52,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView asrTextView;
     private TextView magrebTextView;
     private TextView ishaTextView;
+   // private TextView text1;
+    private TextView textView6;
 
 
 
@@ -60,9 +62,41 @@ public class MainActivity extends AppCompatActivity {
 //
 //        calx();
 
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
+
+        // ---------------------
+
+        textView6=(TextView) findViewById(R.id.textView6);
+
+        Thread myThread = new Thread(){
+            public void run(){
+                try {
+                    while (!isInterrupted()){
+                        Thread.sleep(1000);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Calendar calendar=Calendar.getInstance();
+                                SimpleDateFormat simpleDateFormat=new SimpleDateFormat("hh:mm:ss a");
+                                String curr=simpleDateFormat.format(calendar.getTime());
+                                textView6.setText(curr);
+                            }
+                        });
+
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        };
+        myThread.start();
+
+        //---------------
 
         //initialize sharedPrefrence and editor
         prayerPreference = PreferenceManager.getDefaultSharedPreferences(this);
@@ -95,7 +129,11 @@ public class MainActivity extends AppCompatActivity {
         // Notification set up
         createNotificationChannel();
         buldingTheNotitfications();
+
+
     }
+
+
 
     @Override
     protected void onResume() {
@@ -452,4 +490,19 @@ public class MainActivity extends AppCompatActivity {
         }
         return;
     }
+//    public  void doWork() {
+//        runOnUiThread(new Runnable() {
+//            public void run() {
+//                try{
+//                    text1= (TextView)findViewById(R.id.textele);
+//                    Date dt = new Date();
+//                    int hours = dt.getHours();
+//                    int minutes = dt.getMinutes();
+//                    int seconds = dt.getSeconds();
+//                    String curTime = hours + ":" + minutes + ":" + seconds;
+//                    text1.setText(curTime);
+//                }catch (Exception e) {}
+//            }
+//        });
+//    }
 }

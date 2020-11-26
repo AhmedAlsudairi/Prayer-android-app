@@ -2,16 +2,21 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/textView8"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@drawable/dr"
+
+    >
 
 
     <LinearLayout
         android:id="@+id/linearLayout4"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/background"
+
+
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,29 +28,61 @@
             android:layout_height="wrap_content"
             android:theme="@style/AppTheme.AppBarOverlay">
 
+
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
+                android:background="?attr/colorPrimaryDark"
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
-
         </com.google.android.material.appbar.AppBarLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/textView8"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="38dp"
-                android:layout_gravity="center_horizontal"
-                android:text="@string/الوقت"
-                android:textAlignment="center"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:layout_height="wrap_content"
+
+                android:orientation="horizontal">
+
+                <TextView
+
+                    android:id="@+id/textele"
+                    android:layout_width="match_parent"
+                    android:layout_height="38dp"
+                    android:layout_gravity="center_horizontal"
+                    android:text="الوقت الحالي"
+                    android:textAlignment="center"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+
+                >
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text="TextView"
+                    android:textAlignment="center"
+                    android:textColor="#F60606"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>
@@ -86,8 +123,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
-                android:text="الفجر"
-                android:padding="2dp"/>
+                android:padding="2dp"
+                android:text="الفجر" />
         </LinearLayout>
 
         <LinearLayout
@@ -103,17 +140,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
-                android:text="وقت"
                 android:padding="2dp"
-                />
+                android:text="وقت" />
 
             <TextView
                 android:id="@+id/textView2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
-                android:text="الظهر"
-                android:padding="2dp"/>
+                android:padding="2dp"
+                android:text="الظهر" />
         </LinearLayout>
 
         <LinearLayout
@@ -129,16 +165,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
-                android:text="وقت"
-                android:padding="2dp"/>
+                android:padding="2dp"
+                android:text="وقت" />
 
             <TextView
                 android:id="@+id/textView3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
-                android:text="العصر"
-                android:padding="2dp"/>
+                android:padding="2dp"
+                android:text="العصر" />
         </LinearLayout>
 
         <LinearLayout
@@ -146,8 +182,8 @@
             android:layout_height="match_parent"
             android:layout_marginTop="5dp"
 
-            android:orientation="horizontal"
             android:background="@drawable/gradient"
+            android:orientation="horizontal"
             android:padding="5dp">
 
             <TextView
@@ -155,16 +191,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
-                android:text="وقت"
-                android:padding="2dp"/>
+                android:padding="2dp"
+                android:text="وقت" />
 
             <TextView
                 android:id="@+id/textView4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
-                android:text="المغرب"
-                android:padding="2dp"/>
+                android:padding="2dp"
+                android:text="المغرب" />
         </LinearLayout>
 
         <LinearLayout
@@ -181,16 +217,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
-                android:text="وقت"
-                android:padding="2dp"/>
+                android:padding="2dp"
+                android:text="وقت" />
 
             <TextView
                 android:id="@+id/textView5"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="0.5"
-                android:text="العشاء"
-                android:padding="2dp"/>
+                android:padding="2dp"
+                android:text="العشاء" />
         </LinearLayout>
 
     </LinearLayout>
