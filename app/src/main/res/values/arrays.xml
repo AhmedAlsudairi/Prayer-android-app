@@ -1,62 +1,12 @@
 <resources>
     <!-- Reply Preference -->
-    <string-array name="formats">
-        <item>24H</item>
-        <item>12H</item>
+    <string-array name="reply_entries">
+        <item>Reply</item>
+        <item>Reply to all</item>
     </string-array>
 
-    <string-array name="formatsValue">
-        <item>24H</item>
-        <item>12H</item>
+    <string-array name="reply_values">
+        <item>reply</item>
+        <item>reply_all</item>
     </string-array>
-
-    <string-array name="doc">
-        <item>Ithna Ashari</item>
-        <item>University of Islamic Sciences, Karachi</item>
-        <item>Islamic Society of North America (ISNA)</item>
-        <item>Muslim World League (MWL)</item>
-        <item>Umm al-Qura, Makkah(Default)</item>
-        <item>Egyptian General Authority of Survey</item>
-        <item>Institute of Geophysics, University of Tehran</item>
-
-    </string-array>
-
-    <string-array name="docValue">
-        <item>Ithna Ashari</item>
-        <item>University of Islamic Sciences, Karachi</item>
-        <item>Islamic Society of North America (ISNA)</item>
-        <item>Muslim World League (MWL)</item>
-        <item>Umm al-Qura, Makkah(Default)</item>
-        <item>Egyptian General Authority of Survey</item>
-        <item>Institute of Geophysics, University of Tehran</item>
-
-    </string-array>
-
-    <string-array name="des">
-        <item>Shafii</item>
-        <item>Hanafi</item>
-    </string-array>
-    <string-array name="desval">
-        <item>Shafii</item>
-        <item>Hanafi</item>
-    </string-array>
-
-    <string-array name="min">
-        <item>5 minutes</item>
-        <item>10 minutes</item>
-        <item>15 minutes</item>
-        <item>20 minutes</item>
-        <item>25 minutes</item>
-        <item>30 minutes</item>
-    </string-array>
-    <string-array name="minValues">
-        <item>5 minutes</item>
-        <item>10 minutes</item>
-        <item>15 minutes</item>
-        <item>20 minutes</item>
-        <item>25 minutes</item>
-        <item>30 minutes</item>
-    </string-array>
-
-
 </resources>
