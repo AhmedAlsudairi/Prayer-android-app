@@ -18,6 +18,7 @@ import android.os.Bundle;
 import com.example.libpraytime.PrayTime;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
@@ -70,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
         // ---------------------
 
+
         textView6=(TextView) findViewById(R.id.textView6);
 
         Thread myThread = new Thread(){
@@ -100,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
 
         //initialize sharedPrefrence and editor
         prayerPreference = PreferenceManager.getDefaultSharedPreferences(this);
+
         prayerEditor = prayerPreference.edit();
 
         //initialize prayer time text views
@@ -219,6 +222,8 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent intent=new Intent(MainActivity.this,SettingsActivity.class);
+            startActivity(intent);
             return true;
         }
 
@@ -506,4 +511,6 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
 //    }
+
+
 }

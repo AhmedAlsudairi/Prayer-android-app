@@ -1,35 +1,52 @@
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory app:title="@string/messages_header">
+    <PreferenceCategory app:title="@string/messages_header" android:icon="@drawable/ic_baseline_access_alarms_24">
 
-        <EditTextPreference
-            app:key="signature"
-            app:title="@string/signature_title"
-            app:useSimpleSummaryProvider="true" />
 
         <ListPreference
-            app:defaultValue="reply"
-            app:entries="@array/reply_entries"
-            app:entryValues="@array/reply_values"
-            app:key="reply"
+            app:defaultValue="24H"
+            app:entries="@array/formats"
+            app:entryValues="@array/formatsValue"
+            app:key="format"
             app:title="@string/reply_title"
+            app:useSimpleSummaryProvider="true" />
+        <ListPreference
+            app:defaultValue="Muslim World League (MWL)"
+            app:entries="@array/doc"
+            app:entryValues="@array/docValue"
+            app:key="reference"
+            app:title="reference for prayer time"
+            app:useSimpleSummaryProvider="true" />
+        <ListPreference
+            app:defaultValue="Shafii"
+            app:entries="@array/des"
+            app:entryValues="@array/desval"
+            app:key="doctrines"
+            app:title="doctrines for asr time"
             app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="@string/sync_header">
+    <PreferenceCategory app:title="notification">
+        <ListPreference
+            app:defaultValue="30 minutes"
+            app:entries="@array/min"
+            app:entryValues="@array/minValues"
+            app:key="minutes"
+            app:title="number of minutes to be silent"
+            app:useSimpleSummaryProvider="true" />
 
         <SwitchPreferenceCompat
-            app:key="sync"
-            app:title="@string/sync_title" />
-
-        <SwitchPreferenceCompat
-            app:dependency="sync"
-            app:key="attachment"
-            app:summaryOff="@string/attachment_summary_off"
-            app:summaryOn="@string/attachment_summary_on"
-            app:title="@string/attachment_title" />
+            android:key="able"
+            app:defaultValue="false"
+            android:title="disaple notification"
+            android:summaryOn="you will no longer receive notification"
+            android:summaryOff="you will receive notification"/>
 
     </PreferenceCategory>
+
+
+
 
 </PreferenceScreen>
