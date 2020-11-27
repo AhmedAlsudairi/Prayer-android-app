@@ -12,11 +12,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
 
 public class SettingsActivity extends AppCompatActivity {
- private SharedPreferences  prayerPreference = PreferenceManager.getDefaultSharedPreferences(this);
+
     private SharedPreferences.Editor prayerEditor;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SharedPreferences  prayerPreference = PreferenceManager.getDefaultSharedPreferences(this);
         prayerEditor=   prayerPreference.edit();
        String format= prayerPreference.getString("format","");
        if (format=="24H"){
