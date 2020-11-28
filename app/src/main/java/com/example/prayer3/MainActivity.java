@@ -98,6 +98,8 @@ public class MainActivity extends AppCompatActivity {
         };
         myThread.start();
 
+
+
         //---------------
 
         //initialize sharedPrefrence and editor
@@ -496,21 +498,8 @@ public class MainActivity extends AppCompatActivity {
         }
         return;
     }
-//    public  void doWork() {
-//        runOnUiThread(new Runnable() {
-//            public void run() {
-//                try{
-//                    text1= (TextView)findViewById(R.id.textele);
-//                    Date dt = new Date();
-//                    int hours = dt.getHours();
-//                    int minutes = dt.getMinutes();
-//                    int seconds = dt.getSeconds();
-//                    String curTime = hours + ":" + minutes + ":" + seconds;
-//                    text1.setText(curTime);
-//                }catch (Exception e) {}
-//            }
-//        });
-//    }
+
+
 
 
 }

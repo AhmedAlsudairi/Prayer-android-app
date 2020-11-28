@@ -1,7 +1,7 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory app:title="@string/messages_header" android:icon="@drawable/ic_baseline_access_alarms_24">
+    <PreferenceCategory app:title="@string/messages_header">
 
 
         <ListPreference
@@ -30,6 +30,7 @@
 
     <PreferenceCategory app:title="notification">
         <ListPreference
+
             app:defaultValue="30 minutes"
             app:entries="@array/min"
             app:entryValues="@array/minValues"
