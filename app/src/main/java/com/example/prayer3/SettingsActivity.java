@@ -1,9 +1,14 @@
 package com.example.prayer3;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -12,15 +17,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
 
 public class SettingsActivity extends AppCompatActivity {
-
+    private static String prefsName = "MY_PREF";
     private SharedPreferences.Editor prayerEditor;
-
+    private SharedPreferences prayerPreference;
+    public String format;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SharedPreferences  prayerPreference = PreferenceManager.getDefaultSharedPreferences(this);
-        prayerEditor=   prayerPreference.edit();
-       String format= prayerPreference.getString("format","");
-       if (format=="24H"){
+        prayerPreference = getSharedPreferences(prefsName, Context.MODE_PRIVATE);
+        prayerEditor =  prayerPreference.edit();
+        format= prayerPreference.getString("format","");
+        Log.i("Format Value is : ", format+"");
+
+       if (format.equals("24H")){
          prayerEditor.putInt("formatvalue",0);
        }
        else if (format=="12H"){
@@ -54,7 +62,7 @@ public class SettingsActivity extends AppCompatActivity {
             prayerEditor.putInt("doctrinesvalues",0);
         }
         else{
-            prayerEditor.putInt("doctrinesvalues",1);
+            prayerEditor.putInt("doctrinesvalues",88);
         }
         String minutes=prayerPreference.getString("minutes","");
         if (minutes=="5 minutes"){
@@ -75,7 +83,7 @@ public class SettingsActivity extends AppCompatActivity {
         else  if (minutes=="30 minutes"){
             prayerEditor.putLong("minutesvalue",30);
         }
-
+        prayerEditor.commit();
         setContentView(R.layout.settings_activity);
         if (savedInstanceState == null) {
             getSupportFragmentManager()
@@ -91,7 +99,13 @@ public class SettingsActivity extends AppCompatActivity {
 
     }
 
-    public static class SettingsFragment extends PreferenceFragmentCompat {
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+    public  static class SettingsFragment extends PreferenceFragmentCompat {
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey);

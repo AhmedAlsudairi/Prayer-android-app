@@ -2,6 +2,7 @@ package com.example.prayer3;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -36,6 +37,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -55,7 +57,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView ishaTextView;
    // private TextView text1;
     private TextView textView6;
-
+    private static PrayTime prayer;
+    private static String prefsName = "MY_PREF";
 
 
     @Override
@@ -63,14 +66,14 @@ public class MainActivity extends AppCompatActivity {
 //
 //        calx();
 
-
+        Toast.makeText(getApplicationContext(),"OnCreate",Toast.LENGTH_LONG).show();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
 
         // ---------------------
-
+        prayer = new PrayTime();
 
         textView6=(TextView) findViewById(R.id.textView6);
 
@@ -98,10 +101,12 @@ public class MainActivity extends AppCompatActivity {
         };
         myThread.start();
 
+
+
         //---------------
 
         //initialize sharedPrefrence and editor
-        prayerPreference = PreferenceManager.getDefaultSharedPreferences(this);
+        prayerPreference = getSharedPreferences(prefsName,Context.MODE_PRIVATE);
 
         prayerEditor = prayerPreference.edit();
 
@@ -121,9 +126,18 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
+        int TimeFormat = prayerPreference.getInt("formatvalue",1);
+        int CaluclationMethod = prayerPreference.getInt("referencevalue", 4);
+        int JuristicMethod = prayerPreference.getInt("doctrinesvalues",0);
+        Log.i("Time Format", TimeFormat +"");
+        Log.i("Calculation method", CaluclationMethod +"");
+        Log.i("Juristic Method", JuristicMethod +"");
+
+
+        setPrayerSettings(prayer,TimeFormat,CaluclationMethod,0,3);
+
+
         // saving prayer times in millisecond format
-        PrayTime prayer = new PrayTime();
-        setPrayerSettings(prayer,1,4,0,3);
         try {
             CalculatePrayerTimesOnly(prayer);
         } catch (ParseException e) {
@@ -161,10 +175,7 @@ public class MainActivity extends AppCompatActivity {
                     prayerEditor.putFloat("long", lang);
                     prayerEditor.putFloat("lat", lat);
                     prayerEditor.commit();
-                    PrayTime prayer = new PrayTime();
 
-                    //TODO make the settings comes from shared prefrence so it's becoming dynamic
-                    setPrayerSettings(prayer,1,4,0,3);
 
                     ArrayList<String> prayerTimeWithName = CalculatePrayerTime(prayer);
                     prayerEditor.putString("fajr", prayerTimeWithName.get(0));
@@ -274,6 +285,7 @@ public class MainActivity extends AppCompatActivity {
             //setup the notification
             if (Build.VERSION.SDK_INT >= 23) {
                 alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time, pIntent);
+                //TODO
                 alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time + 1000 * 60 * 30, silencePendingIntent);
             } else if (android.os.Build.VERSION.SDK_INT >= 19) {
                 alarmManager.setExact(AlarmManager.RTC_WAKEUP, time, pIntent);
@@ -496,21 +508,8 @@ public class MainActivity extends AppCompatActivity {
         }
         return;
     }
-//    public  void doWork() {
-//        runOnUiThread(new Runnable() {
-//            public void run() {
-//                try{
-//                    text1= (TextView)findViewById(R.id.textele);
-//                    Date dt = new Date();
-//                    int hours = dt.getHours();
-//                    int minutes = dt.getMinutes();
-//                    int seconds = dt.getSeconds();
-//                    String curTime = hours + ":" + minutes + ":" + seconds;
-//                    text1.setText(curTime);
-//                }catch (Exception e) {}
-//            }
-//        });
-//    }
+
+
 
 
 }
