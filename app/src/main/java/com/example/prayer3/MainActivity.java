@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 //
 //        calx();
 
-        Toast.makeText(getApplicationContext(),"OnCreate",Toast.LENGTH_LONG).show();
+
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -281,18 +281,18 @@ public class MainActivity extends AppCompatActivity {
             Random silence = new Random();
             int silenceInt = silence.nextInt();
             PendingIntent silencePendingIntent = PendingIntent.getBroadcast(MainActivity.this, silenceInt, silenceIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
+            long silenceInterval = prayerPreference.getLong("minutesvalue",30);
             //setup the notification
             if (Build.VERSION.SDK_INT >= 23) {
                 alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time, pIntent);
                 //TODO
-                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time + 1000 * 60 * 30, silencePendingIntent);
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time + 1000 * 60 * silenceInterval, silencePendingIntent);
             } else if (android.os.Build.VERSION.SDK_INT >= 19) {
                 alarmManager.setExact(AlarmManager.RTC_WAKEUP, time, pIntent);
-                alarmManager.setExact(AlarmManager.RTC_WAKEUP, time + 1000 * 60 * 30, silencePendingIntent);
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, time + 1000 * 60 * silenceInterval, silencePendingIntent);
             } else {
                 alarmManager.set(AlarmManager.RTC_WAKEUP, time, pIntent);
-                alarmManager.set(AlarmManager.RTC_WAKEUP, time + 1000 * 60 * 30, silencePendingIntent);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, time + 1000 * 60 * silenceInterval, silencePendingIntent);
             }
         }
     }
