@@ -16,32 +16,32 @@
             app:entries="@array/doc"
             app:entryValues="@array/docValue"
             app:key="reference"
-            app:title="reference for prayer time"
+            app:title="Reference for prayer time"
             app:useSimpleSummaryProvider="true" />
         <ListPreference
             app:defaultValue="Shafii"
             app:entries="@array/des"
             app:entryValues="@array/desval"
             app:key="doctrines"
-            app:title="doctrines for asr time"
+            app:title="Juristic method for asr time"
             app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="notification">
+    <PreferenceCategory app:title="Notification settings">
         <ListPreference
 
             app:defaultValue="30 minutes"
             app:entries="@array/min"
             app:entryValues="@array/minValues"
             app:key="minutes"
-            app:title="number of minutes to be silent"
+            app:title="Number of minutes to be silent"
             app:useSimpleSummaryProvider="true" />
 
         <SwitchPreferenceCompat
             android:key="able"
             app:defaultValue="false"
-            android:title="disaple notification"
+            android:title="disable notification"
             android:summaryOn="you will no longer receive notification"
             android:summaryOff="you will receive notification"/>
 

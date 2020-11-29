@@ -2,6 +2,7 @@ package com.example.prayer3;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -36,6 +37,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -55,7 +57,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView ishaTextView;
    // private TextView text1;
     private TextView textView6;
-
+    private static PrayTime prayer;
+    private static String prefsName = "MY_PREF";
 
 
     @Override
@@ -70,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
 
         // ---------------------
-
+        prayer = new PrayTime();
 
         textView6=(TextView) findViewById(R.id.textView6);
 
@@ -103,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
         //---------------
 
         //initialize sharedPrefrence and editor
-        prayerPreference = PreferenceManager.getDefaultSharedPreferences(this);
+        prayerPreference = getSharedPreferences(prefsName,Context.MODE_PRIVATE);
 
         prayerEditor = prayerPreference.edit();
 
@@ -123,9 +126,14 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
+        int TimeFormat = prayerPreference.getInt("formatvalue",1);
+        int CaluclationMethod = prayerPreference.getInt("referencevalue", 4);
+        int JuristicMethod = prayerPreference.getInt("doctrinesvalues",0);
+
+        setPrayerSettings(prayer,TimeFormat,CaluclationMethod,JuristicMethod,3);
+
+
         // saving prayer times in millisecond format
-        PrayTime prayer = new PrayTime();
-        setPrayerSettings(prayer,1,4,0,3);
         try {
             CalculatePrayerTimesOnly(prayer);
         } catch (ParseException e) {
@@ -163,10 +171,7 @@ public class MainActivity extends AppCompatActivity {
                     prayerEditor.putFloat("long", lang);
                     prayerEditor.putFloat("lat", lat);
                     prayerEditor.commit();
-                    PrayTime prayer = new PrayTime();
 
-                    //TODO make the settings comes from shared prefrence so it's becoming dynamic
-                    setPrayerSettings(prayer,1,4,0,3);
 
                     ArrayList<String> prayerTimeWithName = CalculatePrayerTime(prayer);
                     prayerEditor.putString("fajr", prayerTimeWithName.get(0));
@@ -272,17 +277,18 @@ public class MainActivity extends AppCompatActivity {
             Random silence = new Random();
             int silenceInt = silence.nextInt();
             PendingIntent silencePendingIntent = PendingIntent.getBroadcast(MainActivity.this, silenceInt, silenceIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
+            long silenceInterval = prayerPreference.getLong("minutesvalue",30);
             //setup the notification
             if (Build.VERSION.SDK_INT >= 23) {
                 alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time, pIntent);
-                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time + 1000 * 60 * 30, silencePendingIntent);
+                //TODO
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time + 1000 * 60 * silenceInterval, silencePendingIntent);
             } else if (android.os.Build.VERSION.SDK_INT >= 19) {
                 alarmManager.setExact(AlarmManager.RTC_WAKEUP, time, pIntent);
-                alarmManager.setExact(AlarmManager.RTC_WAKEUP, time + 1000 * 60 * 30, silencePendingIntent);
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, time + 1000 * 60 * silenceInterval, silencePendingIntent);
             } else {
                 alarmManager.set(AlarmManager.RTC_WAKEUP, time, pIntent);
-                alarmManager.set(AlarmManager.RTC_WAKEUP, time + 1000 * 60 * 30, silencePendingIntent);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, time + 1000 * 60 * silenceInterval, silencePendingIntent);
             }
         }
     }
